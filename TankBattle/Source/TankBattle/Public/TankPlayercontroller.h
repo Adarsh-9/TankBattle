@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Tank.h"
 #include "Engine/World.h"
-#include "GameFramework/PlayerController.h"
+#include "DrawDebugHelpers.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayercontroller.generated.h"
 
@@ -17,13 +17,18 @@ class TANKBATTLE_API ATankPlayercontroller : public APlayerController
 {
 	GENERATED_BODY()
 private:
-	void AimAtReticle();
-	bool GetLookDirection(FVector& TraceWorldDirection);
 	FHitResult TraceHitResult;
 	FVector TraceWorldDirection;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,Category = "Aiming")
 	float HitRange = 100000.f;
+	UPROPERTY(EditAnywhere, Category = "Aiming")
+	float CrosshairXLocation = 0.5;
+	UPROPERTY(EditAnywhere, Category = "Aiming")
+	float CrosshairYLocation = 0.3333;
+	void AimAtReticle();
+	bool GetLookDirection(FVector& TraceWorldDirection);
+	bool GetLineTraceHitLocation(FVector& TraceHitLocation);
 
 public:
 	ATank* GetControlledTank() const;

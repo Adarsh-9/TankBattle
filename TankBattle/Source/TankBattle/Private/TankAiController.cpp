@@ -1,39 +1,32 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../Public/TankAiController.h"
-#include "Engine/World.h"
-#include "GameFramework/PlayerController.h"
+#include "TankAIController.h"
 
-ATankAiController::ATankAiController() 
+void ATankAIController::BeginPlay()
 {
-}
-void ATankAiController::BeginPlay()
-{
-	PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
-	if (GetControlledTank())
+	Super::BeginPlay();
+	if (!GetControlledTank())
 	{
-		UE_LOG(LogTemp,Warning,TEXT("Ai tank is possed by AI controller: %s"),*GetControlledTank()->GetName())
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("Ai tank is not possed by AI controller"))
-	}
-	if (PlayerTank)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Aiming at player:%s"), *PlayerTank->GetName())
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("No player to Aim"))
+		UE_LOG(LogTemp, Error, TEXT("AI controller not possessed ay Tank"));
 	}
 }
-void ATankAiController::Tick(float DeltaTime)
+void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp,Warning,TEXT("Inside ai controller Tick"))
+	if (GetPlayerTank())
+	{
+		GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+	}
 }
-ATank* ATankAiController::GetControlledTank() const
+
+ATank* ATankAIController::GetControlledTank()
 {
 	return Cast<ATank>(GetPawn());
 }
+
+ATank* ATankAIController::GetPlayerTank()
+{
+	return Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+}
+
