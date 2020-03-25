@@ -11,5 +11,4 @@ void UBarrel::Elevate(float RelativeSpeed)
 	NewElevation = FMath::Clamp<float>(NewElevation, MinElevationAngle,MaxElevationAngle);
 	SetRelativeRotation(FRotator(NewElevation,0,0));
 	float Time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp,Warning,TEXT("%f Barrel Elevating at speed of %f"),Time,RelativeSpeed)
 }

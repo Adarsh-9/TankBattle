@@ -13,5 +13,9 @@ UCLASS(ClassGroup = (Custom),meta = (BlueprintSpawnableComponent))
 class TANKBATTLE_API UTurret : public UStaticMeshComponent
 {
 	GENERATED_BODY()
-	
+public:
+    void RotateTurret(float RelativeSpeed);
+private:
+    UPROPERTY(EditAnywhere, Category = "Setup")
+    float MaxRotationRate = 20.f;
 };

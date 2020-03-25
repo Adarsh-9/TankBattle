@@ -8,6 +8,7 @@
 
 //Forward Declarations
 class UTankAimingComponent;
+class UTurret;
 class UBarrel;
 UCLASS()
 class TANKBATTLE_API ATank : public APawn
@@ -22,6 +23,8 @@ protected:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable, Category = "SetUp")
 	void SetBarrel(UBarrel* BarrelToSet);
+	UFUNCTION(BlueprintCallable, Category = "SetUp")
+	void SetTurret(UTurret* TurretToSet);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -32,6 +35,8 @@ public:
 	//variables and methods defined by me
 	void AimAt(FVector HitLocation);
 	UTankAimingComponent* AimingComponent;
+	UFUNCTION(BlueprintCallable,Category = "Firing")
+	void FireProjectile();
 private:
 	UPROPERTY(EditAnywhere, Category = "Firing")
 	float LaunchSpeed = 5000.f; //50 m/s
