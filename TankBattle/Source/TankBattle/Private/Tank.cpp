@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "../Public/TankAimingComponent.h"
 #include "../Public/Tank.h"
+#include "../Public/TankAimingComponent.h"
 #include "Components/InputComponent.h"
+#include "Projectile.h"
 #include "Barrel.h"
 // Sets default values
 ATank::ATank()
@@ -38,11 +39,15 @@ void ATank::AimAt(FVector HitLocation)
 
 void ATank::FireProjectile()
 {
+	FTransform ProjectileTransform = BarrelReference->GetSocketTransform(FName("Muzzle"));
+	auto ProjectileSpawned = GetWorld()->SpawnActor(ProjectileClass,&ProjectileTransform,FActorSpawnParameters());
+	Cast<AProjectile>(ProjectileSpawned)->LaunchProjectile(LaunchSpeed);
 	UE_LOG(LogTemp,Warning,TEXT("Firing projectile"))
 }
 
 void ATank::SetBarrel(UBarrel* BarrelToSet)
 {
+	BarrelReference = BarrelToSet;
 	AimingComponent->SetBarrel(BarrelToSet);
 }
 

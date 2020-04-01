@@ -10,6 +10,7 @@
 class UTankAimingComponent;
 class UTurret;
 class UBarrel;
+class AProjectile;
 UCLASS()
 class TANKBATTLE_API ATank : public APawn
 {
@@ -40,4 +41,7 @@ public:
 private:
 	UPROPERTY(EditAnywhere, Category = "Firing")
 	float LaunchSpeed = 5000.f; //50 m/s
+	UPROPERTY(EditAnywhere,Category = "SetUp")
+	TSubclassOf<AProjectile> ProjectileClass;
+	UBarrel* BarrelReference;
 };

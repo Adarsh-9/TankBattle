@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "Tank.h"
+#include "Engine/World.h"
+#include "DrawDebugHelpers.h"
+#include "GameFramework/PlayerController.h"
 #include "..\Public\TankPlayercontroller.h"
 
 
@@ -70,7 +73,7 @@ bool ATankPlayercontroller::GetLineTraceHitLocation(FVector& TraceHitLocation)
 		ECollisionChannel::ECC_Visibility
 	);
 	TraceHitLocation = TraceHitResult.Location;
-	DrawDebugLine(GetWorld(), LineTraceStart + TraceWorldDirection * 100, TraceHitLocation, FColor(255, 0, 0), false, 0.f, 0.f, 2.f);
+	//DrawDebugLine(GetWorld(), LineTraceStart + TraceWorldDirection * 100, TraceHitLocation, FColor(255, 0, 0), false, 0.f, 0.f, 2.f);
 	return TraceHitResult.IsValidBlockingHit();
 }
 

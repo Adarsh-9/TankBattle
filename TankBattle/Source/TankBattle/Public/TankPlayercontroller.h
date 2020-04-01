@@ -3,12 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Tank.h"
-#include "Engine/World.h"
-#include "DrawDebugHelpers.h"
-#include "GameFramework/PlayerController.h"
 #include "TankPlayercontroller.generated.h"
 
+//Forward Declarations
+class ATank;
 /**
  * 
  */
@@ -21,7 +19,7 @@ private:
 	FVector TraceWorldDirection;
 
 	UPROPERTY(EditAnywhere,Category = "Aiming")
-	float HitRange = 100000.f;
+	float HitRange = 50000.f;
 	UPROPERTY(EditAnywhere, Category = "Aiming")
 	float CrosshairXLocation = 0.5;
 	UPROPERTY(EditAnywhere, Category = "Aiming")
