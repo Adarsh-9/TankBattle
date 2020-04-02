@@ -2,6 +2,7 @@
 
 #include "../Public/Tank.h"
 #include "../Public/TankAimingComponent.h"
+#include "TankMovementComponent.h"
 #include "Components/InputComponent.h"
 #include "Projectile.h"
 #include "Barrel.h"
@@ -11,6 +12,7 @@ ATank::ATank()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	AimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+	MovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 }
 
 // Called when the game starts or when spawned
@@ -19,6 +21,8 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
 	
 }
+
+
 
 // Called every frame
 void ATank::Tick(float DeltaTime)
@@ -30,6 +34,7 @@ void ATank::Tick(float DeltaTime)
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
 }
 
 void ATank::AimAt(FVector HitLocation)
@@ -39,21 +44,23 @@ void ATank::AimAt(FVector HitLocation)
 
 void ATank::FireProjectile()
 {
-	FTransform ProjectileTransform = BarrelReference->GetSocketTransform(FName("Muzzle"));
-	auto ProjectileSpawned = GetWorld()->SpawnActor(ProjectileClass,&ProjectileTransform,FActorSpawnParameters());
-	Cast<AProjectile>(ProjectileSpawned)->LaunchProjectile(LaunchSpeed);
-	UE_LOG(LogTemp,Warning,TEXT("Firing projectile"))
+	CurrentFireTime = GetWorld()->GetTimeSeconds();
+	if (CurrentFireTime - PreviousFireTime >= ReloadTime)
+	{
+		PreviousFireTime = GetWorld()->GetTimeSeconds();
+		FTransform ProjectileTransform = BarrelReference->GetSocketTransform(FName("Muzzle"));
+		auto ProjectileSpawned = GetWorld()->SpawnActor(ProjectileClass, &ProjectileTransform, FActorSpawnParameters());
+		Cast<AProjectile>(ProjectileSpawned)->LaunchProjectile(LaunchSpeed);
+	}
 }
-
-void ATank::SetBarrel(UBarrel* BarrelToSet)
+void ATank::InitialiseComponentData(UBarrel* BarrelToSet, UTurret* TurretToSet, UTankTrack* LeftTrack, UTankTrack* RightTrack)
 {
 	BarrelReference = BarrelToSet;
 	AimingComponent->SetBarrel(BarrelToSet);
+	AimingComponent->SetTurret(TurretToSet);
+	MovementComponent->SetTracks(LeftTrack,RightTrack);
 }
 
-void ATank::SetTurret(UTurret* TurretToSet)
-{
-	AimingComponent->SetTurret(TurretToSet);
-}
+
 
 

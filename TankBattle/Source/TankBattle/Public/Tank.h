@@ -11,6 +11,8 @@ class UTankAimingComponent;
 class UTurret;
 class UBarrel;
 class AProjectile;
+class UTankTrack;
+class UTankMovementComponent;
 UCLASS()
 class TANKBATTLE_API ATank : public APawn
 {
@@ -23,9 +25,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable, Category = "SetUp")
-	void SetBarrel(UBarrel* BarrelToSet);
-	UFUNCTION(BlueprintCallable, Category = "SetUp")
-	void SetTurret(UTurret* TurretToSet);
+	void InitialiseComponentData(UBarrel* BarrelToSet, UTurret* TurretToSet,UTankTrack* LeftTrack,UTankTrack* RightTrack);
+	UPROPERTY(BlueprintReadOnly, category = "Controls")
+	UTankMovementComponent* MovementComponent = nullptr;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -44,4 +46,8 @@ private:
 	UPROPERTY(EditAnywhere,Category = "SetUp")
 	TSubclassOf<AProjectile> ProjectileClass;
 	UBarrel* BarrelReference;
+	UPROPERTY(EditDefaultsOnly,Category = "Firing")
+	float ReloadTime = 3.f;
+	float PreviousFireTime = 0.f;
+	float CurrentFireTime = 0.f;
 };

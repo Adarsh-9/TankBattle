@@ -17,5 +17,5 @@ public:
 	UFUNCTION(BlueprintCallable,Category = "Input")
 	void SetThrottle(float ThrottleValue);
 	UPROPERTY(EditDefaultsOnly, Category = "Throttle")
-	float MaxThrottleForce = 480000; //mass of 48000kg and acceleration of 10g F = m*a;
+	float MaxThrottleForce = 48000000; 
 };
