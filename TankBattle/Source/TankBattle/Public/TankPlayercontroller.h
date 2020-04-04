@@ -28,8 +28,10 @@ private:
 	bool GetLookDirection(FVector& TraceWorldDirection);
 	bool GetLineTraceHitLocation(FVector& TraceHitLocation);
 
-public:
+protected:
+	UFUNCTION(BlueprintCallable)
 	ATank* GetControlledTank() const;
+public:
 	void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 };

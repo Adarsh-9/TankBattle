@@ -37,6 +37,7 @@ public:
 
 	//variables and methods defined by me
 	void AimAt(FVector HitLocation);
+	UPROPERTY(BlueprintReadOnly)
 	UTankAimingComponent* AimingComponent;
 	UFUNCTION(BlueprintCallable,Category = "Firing")
 	void FireProjectile();
