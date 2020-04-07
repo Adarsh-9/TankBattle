@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright : Adarsh.S 2020
 
 #pragma once
 
@@ -12,7 +12,7 @@ class UTurret;
 class UBarrel;
 class AProjectile;
 class UTankTrack;
-class UTankMovementComponent;
+
 UCLASS()
 class TANKBATTLE_API ATank : public APawn
 {
@@ -24,10 +24,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 	UFUNCTION(BlueprintCallable, Category = "SetUp")
-	void InitialiseComponentData(UBarrel* BarrelToSet, UTurret* TurretToSet,UTankTrack* LeftTrack,UTankTrack* RightTrack);
-	UPROPERTY(BlueprintReadOnly, category = "Controls")
-	UTankMovementComponent* MovementComponent = nullptr;
+	void InitialiseComponentData(UBarrel* BarrelToSet, UTurret* TurretToSet);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -35,10 +34,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	//variables and methods defined by me
+
 	void AimAt(FVector HitLocation);
 	UPROPERTY(BlueprintReadOnly)
 	UTankAimingComponent* AimingComponent;
+
 	UFUNCTION(BlueprintCallable,Category = "Firing")
 	void FireProjectile();
 private:

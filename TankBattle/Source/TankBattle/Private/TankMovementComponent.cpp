@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright : Adarsh.S 2020
 
 #include "TankTrack.h"
 #include "TankMovementComponent.h"
@@ -21,7 +21,7 @@ void UTankMovementComponent::HandleTurnLeft(float AxisValue)
 	RightTrack->SetThrottle(AxisValue);
 }
 
-void UTankMovementComponent::SetTracks(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet)
+void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet)
 {
 	LeftTrack = LeftTrackToSet;
 	RightTrack = RightTrackToSet;

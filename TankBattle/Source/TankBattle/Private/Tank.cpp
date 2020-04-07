@@ -1,8 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// Copyright : Adarsh.S 2020
 #include "../Public/Tank.h"
 #include "../Public/TankAimingComponent.h"
-#include "TankMovementComponent.h"
 #include "Components/InputComponent.h"
 #include "Projectile.h"
 #include "Barrel.h"
@@ -12,7 +10,6 @@ ATank::ATank()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	AimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
-	MovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 }
 
 // Called when the game starts or when spawned
@@ -53,12 +50,11 @@ void ATank::FireProjectile()
 		Cast<AProjectile>(ProjectileSpawned)->LaunchProjectile(LaunchSpeed);
 	}
 }
-void ATank::InitialiseComponentData(UBarrel* BarrelToSet, UTurret* TurretToSet, UTankTrack* LeftTrack, UTankTrack* RightTrack)
+void ATank::InitialiseComponentData(UBarrel* BarrelToSet, UTurret* TurretToSet)
 {
 	BarrelReference = BarrelToSet;
 	AimingComponent->SetBarrel(BarrelToSet);
 	AimingComponent->SetTurret(TurretToSet);
-	MovementComponent->SetTracks(LeftTrack,RightTrack);
 }
 
 
