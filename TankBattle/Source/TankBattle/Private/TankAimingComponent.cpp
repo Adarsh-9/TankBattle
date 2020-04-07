@@ -37,6 +37,10 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 void UTankAimingComponent::AimAt(FVector AimLocation,float LaunchSpeed)
 {
+	if (!ensure(Barrel))
+	{
+		return;
+	}
 	auto StartLocation = Barrel->GetSocketLocation(FName("Muzzle"));
 	FVector LaunchVelocity;
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity
@@ -63,14 +67,13 @@ void UTankAimingComponent::AimAt(FVector AimLocation,float LaunchSpeed)
 	return;
 }
 
-void UTankAimingComponent::SetBarrel(UBarrel* BarrelToSet)
+void UTankAimingComponent::Initialise(UBarrel* BarrelToSet, UTurret* TurretToSet)
 {
+	if (!ensure(BarrelToSet && TurretToSet))
+	{
+		return;
+	}
 	Barrel = BarrelToSet;
-	return;
-}
-
-void UTankAimingComponent::SetTurret(UTurret* TurretToSet)
-{
 	Turret = TurretToSet;
 }
 

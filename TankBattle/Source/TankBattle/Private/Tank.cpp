@@ -9,14 +9,13 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	AimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
 }
 
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	AimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 
@@ -36,13 +35,17 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::AimAt(FVector HitLocation)
 {
+	if (!ensure(AimingComponent))
+	{
+		return;
+	}
 	AimingComponent->AimAt(HitLocation,LaunchSpeed);
 }
 
 void ATank::FireProjectile()
 {
 	CurrentFireTime = GetWorld()->GetTimeSeconds();
-	if (CurrentFireTime - PreviousFireTime >= ReloadTime)
+	if (CurrentFireTime - PreviousFireTime >= ReloadTime && ensure(BarrelReference))
 	{
 		PreviousFireTime = GetWorld()->GetTimeSeconds();
 		FTransform ProjectileTransform = BarrelReference->GetSocketTransform(FName("Muzzle"));
@@ -50,11 +53,13 @@ void ATank::FireProjectile()
 		Cast<AProjectile>(ProjectileSpawned)->LaunchProjectile(LaunchSpeed);
 	}
 }
-void ATank::InitialiseComponentData(UBarrel* BarrelToSet, UTurret* TurretToSet)
+void ATank::InitialiseComponentData(UBarrel* BarrelToSet)
 {
+	if ( !ensure(BarrelToSet))
+	{
+		return;
+	}
 	BarrelReference = BarrelToSet;
-	AimingComponent->SetBarrel(BarrelToSet);
-	AimingComponent->SetTurret(TurretToSet);
 }
 
 

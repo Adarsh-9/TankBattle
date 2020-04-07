@@ -1,6 +1,8 @@
 //Copyright : Adarsh.S 2020
 
-
+#include "Tank.h"
+#include "Engine/World.h"
+#include "GameFramework/PlayerController.h"
 #include "TankAIController.h"
 
 void ATankAIController::BeginPlay()
@@ -14,7 +16,7 @@ void ATankAIController::BeginPlay()
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (GetPlayerTank())
+	if (ensure(GetPlayerTank()))
 	{
 		MoveToActor(GetPlayerTank(),AcceptanceRadius);
 		GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());

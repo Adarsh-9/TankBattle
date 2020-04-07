@@ -26,7 +26,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable, Category = "SetUp")
-	void InitialiseComponentData(UBarrel* BarrelToSet, UTurret* TurretToSet);
+	void InitialiseComponentData(UBarrel* BarrelToSet);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -5,24 +5,28 @@
 
 void UTankMovementComponent::HandleForwardMovement(float AxisValue)
 {
+	if (!ensure(LeftTrack && RightTrack)){return;}
 	LeftTrack->SetThrottle(AxisValue);
 	RightTrack->SetThrottle(AxisValue);
 }
 
 void UTankMovementComponent::HandleTurnRight(float AxisValue)
 {
+	if (!ensure(LeftTrack && RightTrack)) { return; }
 	LeftTrack->SetThrottle(AxisValue);
 	RightTrack->SetThrottle(-AxisValue);
 }
 
 void UTankMovementComponent::HandleTurnLeft(float AxisValue)
 {
+	if (!ensure(LeftTrack && RightTrack)) { return; }
 	LeftTrack->SetThrottle(-AxisValue);
 	RightTrack->SetThrottle(AxisValue);
 }
 
 void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet)
 {
+	if (!ensure(LeftTrackToSet && RightTrackToSet)) { return; }
 	LeftTrack = LeftTrackToSet;
 	RightTrack = RightTrackToSet;
 }

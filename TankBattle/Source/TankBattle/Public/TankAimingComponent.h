@@ -9,6 +9,13 @@
 //Forward declarations
 class UBarrel;
 class UTurret;
+UENUM()
+enum class EAimingStatus :uint8
+{
+	Reloading,
+	Aiming,
+	Locked
+};
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TANKBATTLE_API UTankAimingComponent : public UActorComponent
@@ -22,14 +29,17 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
+	UPROPERTY(BlueprintReadOnly)
+		EAimingStatus AimngStatus = EAimingStatus::Reloading;
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	void AimAt(FVector AimLocation,float LaunchSpeed);
-	void SetBarrel(UBarrel* BarrelToSet);
-	void SetTurret(UTurret* TurretToSet);
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void Initialise(UBarrel* BarrelToSet, UTurret* TurretToSet);
+	//void SetBarrel(UBarrel* BarrelToSet);//TODO Remove and make a better architecture
+	//void SetTurret(UTurret* TurretToSet);//TODO Remove and make a better architecture
 private:
 	UBarrel* Barrel;
 	UTurret* Turret;

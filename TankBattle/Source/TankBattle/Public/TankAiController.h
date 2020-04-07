@@ -3,15 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Tank.h"
-#include "Engine/World.h"
-#include "GameFramework/PlayerController.h"
 #include "AIController.h"
 #include "TankAIController.generated.h"
 
 /**
- * 
+ This class is responsible for controlling AI tanks
  */
+class ATank;
 UCLASS()
 class TANKBATTLE_API ATankAIController : public AAIController
 {
