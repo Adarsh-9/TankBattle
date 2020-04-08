@@ -1,9 +1,10 @@
 // Copyright : Adarsh.S 2020
 
-#include "Components/SceneComponent.h"
+//#include "Components/SceneComponent.h"
 #include "Engine/World.h"
 #include "Barrel.h"
 #include "Turret.h"
+#include "Projectile.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
 #include "../Public/TankAimingComponent.h"
@@ -31,11 +32,23 @@ void UTankAimingComponent::BeginPlay()
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	// ...
+	CurrentFireTime = GetWorld()->GetTimeSeconds();
+	bIsReloaded = ((CurrentFireTime - PreviousFireTime) >= ReloadTime);
+	if (! bIsReloaded)
+	{
+		AimingStatus = EAimingStatus::Reloading;
+	}
+	else if (IsBarrelMoving())
+	{
+		AimingStatus = EAimingStatus::Aiming;
+	}
+	else
+	{
+		AimingStatus = EAimingStatus::Locked;
+	}
 }
 
-
-void UTankAimingComponent::AimAt(FVector AimLocation,float LaunchSpeed)
+void UTankAimingComponent::AimAt(FVector AimLocation)
 {
 	if (!ensure(Barrel))
 	{
@@ -57,7 +70,7 @@ void UTankAimingComponent::AimAt(FVector AimLocation,float LaunchSpeed)
 			FCollisionResponseParams::DefaultResponseParam,
 			TArray<AActor*>(),
 			false);
-	FVector LaunchDirection = LaunchVelocity.GetSafeNormal();
+	LaunchDirection = LaunchVelocity.GetSafeNormal();
 	if (bHaveAimSolution)
 	{
 		MoveBarrelTowards(LaunchDirection);
@@ -101,6 +114,24 @@ void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
 	}
 	else
 		return;
+}
+
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	if (!ensure(Barrel)) { return false; }
+	auto BarrelDirection = Barrel->GetForwardVector();
+	return !BarrelDirection.Equals(LaunchDirection,0.01);
+}
+
+void UTankAimingComponent::FireProjectile()
+{
+	if (bIsReloaded && ensure(Barrel))
+	{
+		PreviousFireTime = GetWorld()->GetTimeSeconds();
+		FTransform ProjectileTransform = Barrel->GetSocketTransform(FName("Muzzle"));
+		auto ProjectileSpawned = GetWorld()->SpawnActor(ProjectileClass, &ProjectileTransform, FActorSpawnParameters());
+		Cast<AProjectile>(ProjectileSpawned)->LaunchProjectile(LaunchSpeed);
+	}
 }
 
 

@@ -6,7 +6,6 @@
 #include "TankPlayercontroller.generated.h"
 
 //Forward Declarations
-class ATank;
 class UTankAimingComponent;
 /**
  * 
@@ -28,12 +27,12 @@ private:
 	void AimAtReticle();
 	bool GetLookDirection(FVector& TraceWorldDirection);
 	bool GetLineTraceHitLocation(FVector& TraceHitLocation);
-
 protected:
 	UFUNCTION(BlueprintCallable)
-	ATank* GetControlledTank() const;
+	APawn* GetControlledTank() const;
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
-	void FoundAimingcomponent(UTankAimingComponent* AimingComponent);
+	void FoundAimingcomponent(UTankAimingComponent* AimingComponentArg);
+	UTankAimingComponent* AimingComponent;
 public:
 	void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;

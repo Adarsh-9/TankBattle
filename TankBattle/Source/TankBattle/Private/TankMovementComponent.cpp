@@ -5,23 +5,26 @@
 
 void UTankMovementComponent::HandleForwardMovement(float AxisValue)
 {
-	if (!ensure(LeftTrack && RightTrack)){return;}
+	/*if (!ensure(LeftTrack && RightTrack)){return;}
 	LeftTrack->SetThrottle(AxisValue);
-	RightTrack->SetThrottle(AxisValue);
+	RightTrack->SetThrottle(AxisValue);*/
+	GetOwner()->AddActorLocalOffset(FVector(AxisValue*15,0,0));
 }
 
 void UTankMovementComponent::HandleTurnRight(float AxisValue)
 {
-	if (!ensure(LeftTrack && RightTrack)) { return; }
+	/*if (!ensure(LeftTrack && RightTrack)) { return; }
 	LeftTrack->SetThrottle(AxisValue);
-	RightTrack->SetThrottle(-AxisValue);
+	RightTrack->SetThrottle(-AxisValue);*/
+	GetOwner()->AddActorLocalRotation(FRotator(0,AxisValue,0));
 }
 
 void UTankMovementComponent::HandleTurnLeft(float AxisValue)
 {
-	if (!ensure(LeftTrack && RightTrack)) { return; }
+	/*if (!ensure(LeftTrack && RightTrack)) { return; }
 	LeftTrack->SetThrottle(-AxisValue);
-	RightTrack->SetThrottle(AxisValue);
+	RightTrack->SetThrottle(AxisValue);*/
+	GetOwner()->AddActorLocalRotation(FRotator(0,-AxisValue,0));
 }
 
 void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet)

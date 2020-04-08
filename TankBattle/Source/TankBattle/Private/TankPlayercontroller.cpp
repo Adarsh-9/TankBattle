@@ -1,6 +1,5 @@
 // Copyright : Adarsh.S 2020
 
-#include "Tank.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 #include "TankAimingComponent.h"
@@ -15,7 +14,7 @@ void ATankPlayercontroller::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("No tank is possessed by the controller"))
 	}
-	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
 	if (ensure(AimingComponent))
 	{
 		FoundAimingcomponent(AimingComponent);
@@ -32,26 +31,26 @@ void ATankPlayercontroller::Tick(float DeltaTime)
 	AimAtReticle();
 }
 
-ATank* ATankPlayercontroller::GetControlledTank() const
+APawn* ATankPlayercontroller::GetControlledTank() const
 {
-	return Cast<ATank>(GetPawn());
+	return GetPawn();
 }
 
 
 void ATankPlayercontroller::AimAtReticle()
 {
 
-	if (GetLookDirection(TraceWorldDirection))
+	if (GetLookDirection(TraceWorldDirection) && ensure(AimingComponent))
 	{
 		FVector TraceHitLocation;
 		if (GetLineTraceHitLocation(TraceHitLocation))
 		{
-			GetControlledTank()->AimAt(TraceHitLocation);
+			AimingComponent->AimAt(TraceHitLocation);
 		}
 		else
 		{
 			TraceHitLocation = FVector(0);
-			GetControlledTank()->AimAt(TraceHitLocation);
+			AimingComponent->AimAt(TraceHitLocation);
 		}
 	}
 }

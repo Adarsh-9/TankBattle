@@ -9,6 +9,7 @@
 //Forward declarations
 class UBarrel;
 class UTurret;
+class AProjectile;
 UENUM()
 enum class EAimingStatus :uint8
 {
@@ -30,19 +31,33 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	UPROPERTY(BlueprintReadOnly)
-		EAimingStatus AimngStatus = EAimingStatus::Reloading;
+		EAimingStatus AimingStatus = EAimingStatus::Reloading;
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
-	void AimAt(FVector AimLocation,float LaunchSpeed);
+	void AimAt(FVector AimLocation);
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialise(UBarrel* BarrelToSet, UTurret* TurretToSet);
-	//void SetBarrel(UBarrel* BarrelToSet);//TODO Remove and make a better architecture
-	//void SetTurret(UTurret* TurretToSet);//TODO Remove and make a better architecture
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	void FireProjectile();
 private:
-	UBarrel* Barrel;
-	UTurret* Turret;
 	void MoveBarrelTowards(FVector AimDirection);
 	void MoveTurretTowards(FVector AimDirection);
+	bool IsBarrelMoving();
+	UBarrel* Barrel;
+	UTurret* Turret;
+	bool bIsReloaded = false;
+	UPROPERTY(EditAnywhere, Category = "Firing")
+	float LaunchSpeed = 5000.f; //50 m/s
+
+	UPROPERTY(EditAnywhere, Category = "SetUp")
+		TSubclassOf<AProjectile> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float ReloadTime = 3.f;
+
+	float PreviousFireTime = 0.f;
+	float CurrentFireTime = 0.f;
+	FVector LaunchDirection;
 };

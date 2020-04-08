@@ -1,14 +1,14 @@
 //Copyright : Adarsh.S 2020
 
-#include "Tank.h"
 #include "Engine/World.h"
+#include "TankAimingComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "TankAIController.h"
 
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	if (!GetControlledTank())
+	if (!GetPawn())
 	{
 		UE_LOG(LogTemp, Error, TEXT("AI controller not possessed ay Tank"));
 	}
@@ -19,19 +19,15 @@ void ATankAIController::Tick(float DeltaTime)
 	if (ensure(GetPlayerTank()))
 	{
 		MoveToActor(GetPlayerTank(),AcceptanceRadius);
-		GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
-		GetControlledTank()->FireProjectile();
+		auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+		AimingComponent->AimAt(GetPlayerTank()->GetActorLocation());
+		AimingComponent->FireProjectile();
 	}
 }
 
-ATank* ATankAIController::GetControlledTank()
+APawn* ATankAIController::GetPlayerTank()
 {
-	return Cast<ATank>(GetPawn());
-}
-
-ATank* ATankAIController::GetPlayerTank()
-{
-	return Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	return GetWorld()->GetFirstPlayerController()->GetPawn();
 }
 
 

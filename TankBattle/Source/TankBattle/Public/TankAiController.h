@@ -19,7 +19,6 @@ protected:
 public:
     virtual void Tick(float DeltaTime) override;
 private:
-    ATank* GetControlledTank();
-    ATank* GetPlayerTank();
+    APawn* GetPlayerTank();
     float AcceptanceRadius = 3000.f;
 };
