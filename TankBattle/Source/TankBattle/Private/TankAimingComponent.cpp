@@ -1,13 +1,12 @@
 // Copyright : Adarsh.S 2020
 
-//#include "Components/SceneComponent.h"
+#include "TankAimingComponent.h"
 #include "Engine/World.h"
 #include "Barrel.h"
 #include "Turret.h"
 #include "Projectile.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
-#include "../Public/TankAimingComponent.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
