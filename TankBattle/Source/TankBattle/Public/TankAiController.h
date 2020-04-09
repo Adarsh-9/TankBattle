@@ -20,5 +20,6 @@ public:
     virtual void Tick(float DeltaTime) override;
 private:
     APawn* GetPlayerTank();
+    UPROPERTY(EditDefaultsOnly,Category = "Movement")
     float AcceptanceRadius = 3000.f;
 };

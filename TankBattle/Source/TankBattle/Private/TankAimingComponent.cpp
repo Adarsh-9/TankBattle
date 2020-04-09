@@ -34,7 +34,11 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	CurrentFireTime = GetWorld()->GetTimeSeconds();
 	bIsReloaded = ((CurrentFireTime - PreviousFireTime) >= ReloadTime);
-	if (! bIsReloaded)
+	if (AmmoLeft <= 0)
+	{
+		AimingStatus = EAimingStatus::OutOfAmmo;
+	}
+	else if (! bIsReloaded)
 	{
 		AimingStatus = EAimingStatus::Reloading;
 	}
@@ -108,12 +112,15 @@ void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
 	FRotator TurretRotation = Barrel->GetForwardVector().Rotation();
 	FRotator AimRotation = AimDirection.Rotation();
 	FRotator DeltaRotation = AimRotation - TurretRotation;
-	if (Turret)
+	if (!ensure(Turret)) { return; }
+	if(FMath::Abs(DeltaRotation.Yaw) < 180)
 	{
 		Turret->RotateTurret(DeltaRotation.Yaw);
 	}
 	else
-		return;
+	{
+		Turret->RotateTurret(-DeltaRotation.Yaw);
+	}		
 }
 
 bool UTankAimingComponent::IsBarrelMoving()
@@ -125,13 +132,25 @@ bool UTankAimingComponent::IsBarrelMoving()
 
 void UTankAimingComponent::FireProjectile()
 {
-	if (bIsReloaded && ensure(Barrel))
+	if (!ensure(Barrel)){return;}
+	if (bIsReloaded && AmmoLeft > 0)
 	{
 		PreviousFireTime = GetWorld()->GetTimeSeconds();
 		FTransform ProjectileTransform = Barrel->GetSocketTransform(FName("Muzzle"));
 		auto ProjectileSpawned = GetWorld()->SpawnActor(ProjectileClass, &ProjectileTransform, FActorSpawnParameters());
 		Cast<AProjectile>(ProjectileSpawned)->LaunchProjectile(LaunchSpeed);
+		AmmoLeft--;
 	}
+}
+
+int32 UTankAimingComponent::GetAmmoLeft() const
+{
+	return AmmoLeft;
+}
+
+EAimingStatus UTankAimingComponent::GetAimingStatus() const
+{
+	return AimingStatus;
 }
 
 
