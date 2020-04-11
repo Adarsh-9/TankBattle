@@ -7,6 +7,8 @@
 #include "Projectile.generated.h"
 //Forward Declarations
 class UProjectileMovementComponent;
+class UParticleSystemComponent;
+class URadialForceComponent;
 UCLASS()
 class TANKBATTLE_API AProjectile : public AActor
 {
@@ -19,12 +21,25 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	UPROPERTY(BlueprintReadOnly, Category = "Projectile")
+		UParticleSystemComponent* ImpactBlast;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void LaunchProjectile(float Speed);
 private:
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
-
+	UPROPERTY(VisibleAnywhere, Category = "Projectile")
+		UParticleSystemComponent* LaunchBlast;
+	UPROPERTY(VisibleAnywhere, Category = "Projectile")
+		UStaticMeshComponent* CollisionMesh;
+	UPROPERTY(VisibleAnywhere, Category = "Projectile")
+		URadialForceComponent* RadialForce;
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	void OnTimerExpire();
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float DestroyTimer = 5.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float DamageAmount = 10.f;
 };
