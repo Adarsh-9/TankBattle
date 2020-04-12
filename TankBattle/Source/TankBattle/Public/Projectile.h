@@ -23,6 +23,8 @@ protected:
 	virtual void BeginPlay() override;
 	UPROPERTY(BlueprintReadOnly, Category = "Projectile")
 		UParticleSystemComponent* ImpactBlast;
+	UFUNCTION(BlueprintImplementableEvent)
+		void OnProjectileHitEvent();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

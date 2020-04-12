@@ -129,9 +129,9 @@ bool UTankAimingComponent::IsBarrelMoving()
 	return !BarrelDirection.Equals(LaunchDirection,0.01);
 }
 
-void UTankAimingComponent::FireProjectile()
+bool UTankAimingComponent::FireProjectile()
 {
-	if (!ensure(Barrel)){return;}
+	if (!ensure(Barrel)){return false;}
 	if (bIsReloaded && AmmoLeft > 0)
 	{
 		PreviousFireTime = GetWorld()->GetTimeSeconds();
@@ -139,6 +139,13 @@ void UTankAimingComponent::FireProjectile()
 		auto ProjectileSpawned = GetWorld()->SpawnActor(ProjectileClass, &ProjectileTransform, FActorSpawnParameters());
 		Cast<AProjectile>(ProjectileSpawned)->LaunchProjectile(LaunchSpeed);
 		AmmoLeft--;
+		bIsFiringSuccesfull = true;
+		return bIsFiringSuccesfull;
+	}
+	else
+	{
+		bIsFiringSuccesfull = false;
+		return bIsFiringSuccesfull;
 	}
 }
 

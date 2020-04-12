@@ -5,6 +5,7 @@
 #include "DrawDebugHelpers.h"
 #include "TankAimingComponent.h"
 #include "GameFramework/PlayerController.h"
+#include "Tank.h"
 
 void ATankPlayercontroller::BeginPlay()
 {
@@ -23,7 +24,21 @@ void ATankPlayercontroller::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("No Aiming Component is found in tank"))
 	}
 }
-
+void ATankPlayercontroller::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+	if (InPawn)
+	{
+		auto PossedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossedTank)) { return; }
+		PossedTank->TankDead.AddUniqueDynamic(this, &ATankPlayercontroller::OnPossessedTankDeath);
+	}
+}
+void ATankPlayercontroller::OnPossessedTankDeath()
+{
+	StartSpectatingOnly();
+	UE_LOG(LogTemp, Warning, TEXT("Player Tank Death Message Received"))
+}
 void ATankPlayercontroller::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

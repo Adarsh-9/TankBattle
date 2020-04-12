@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDeadDelegate);
 //Forward Declarations
 
 UCLASS()
@@ -16,9 +17,12 @@ class TANKBATTLE_API ATank : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATank();
+	FTankDeadDelegate TankDead;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void OnDamageTakenEvent();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -40,6 +44,6 @@ public:
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 		int32 MaxHealth = 100;
-	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	UPROPERTY(VisibleAnywhere, Category = "Health")
 		int32 CurrentHealth;
 };

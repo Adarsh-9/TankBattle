@@ -18,8 +18,11 @@ protected:
     virtual void BeginPlay() override;
 public:
     virtual void Tick(float DeltaTime) override;
+    UFUNCTION()
+        void OnPossessedTankDeath();
 private:
     APawn* GetPlayerTank();
     UPROPERTY(EditDefaultsOnly,Category = "Movement")
     float AcceptanceRadius = 3000.f;
+    virtual void SetPawn(APawn* InPawn) override;
 };

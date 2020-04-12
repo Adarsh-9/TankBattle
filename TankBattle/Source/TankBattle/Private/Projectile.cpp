@@ -45,6 +45,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	ImpactBlast->Activate();
 	RadialForce->FireImpulse();
 	SetRootComponent(ImpactBlast);
+	OnProjectileHitEvent();
 	CollisionMesh->DestroyComponent();
 	
 	UGameplayStatics::ApplyRadialDamage(this,DamageAmount,GetActorLocation(),RadialForce->Radius,UDamageType::StaticClass(),TArray<AActor*>());

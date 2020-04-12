@@ -27,6 +27,7 @@ private:
 	void AimAtReticle();
 	bool GetLookDirection(FVector& TraceWorldDirection);
 	bool GetLineTraceHitLocation(FVector& TraceHitLocation);
+	virtual void SetPawn(APawn* InPawn) override;
 protected:
 	UFUNCTION(BlueprintCallable)
 	APawn* GetControlledTank() const;
@@ -36,4 +37,6 @@ protected:
 public:
 	void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	UFUNCTION()
+		void OnPossessedTankDeath();
 };

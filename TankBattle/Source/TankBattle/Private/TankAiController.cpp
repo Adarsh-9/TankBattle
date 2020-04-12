@@ -4,6 +4,7 @@
 #include "Engine/World.h"
 #include "TankAimingComponent.h"
 #include "GameFramework/PlayerController.h"
+#include "Tank.h"
 
 void ATankAIController::BeginPlay()
 {
@@ -13,6 +14,24 @@ void ATankAIController::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("AI controller not possessed ay Tank"));
 	}
 }
+
+
+void ATankAIController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+	if (InPawn)
+	{
+		auto PossedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossedTank)) { return; }
+		PossedTank->TankDead.AddUniqueDynamic(this, &ATankAIController::OnPossessedTankDeath);
+	}
+}
+void ATankAIController::OnPossessedTankDeath()
+{
+	GetPawn()->DetachFromControllerPendingDestroy();
+	UE_LOG(LogTemp,Warning,TEXT("AI Tank Death Message Received"))
+}
+
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -32,5 +51,6 @@ APawn* ATankAIController::GetPlayerTank()
 {
 	return GetWorld()->GetFirstPlayerController()->GetPawn();
 }
+
 
 

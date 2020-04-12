@@ -43,10 +43,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialise(UBarrel* BarrelToSet, UTurret* TurretToSet);
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	void FireProjectile();
+	bool FireProjectile();
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 	int32 GetAmmoLeft() const;
 	EAimingStatus GetAimingStatus() const;
+	UPROPERTY(BlueprintReadOnly)
+		bool bIsFiringSuccesfull = true;
 private:
 	void MoveBarrelTowards(FVector AimDirection);
 	void MoveTurretTowards(FVector AimDirection);

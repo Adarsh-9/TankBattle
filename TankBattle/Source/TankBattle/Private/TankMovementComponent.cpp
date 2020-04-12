@@ -8,7 +8,7 @@ void UTankMovementComponent::HandleForwardMovement(float AxisValue)
 	/*if (!ensure(LeftTrack && RightTrack)){return;}
 	LeftTrack->SetThrottle(AxisValue);
 	RightTrack->SetThrottle(AxisValue);*/
-	GetOwner()->AddActorLocalOffset(FVector(AxisValue*15,0,0));
+	GetOwner()->AddActorLocalOffset(FVector(AxisValue*18,0,0));
 }
 
 void UTankMovementComponent::HandleTurnRight(float AxisValue)
