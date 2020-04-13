@@ -17,8 +17,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	UFUNCTION(BlueprintCallable,Category = "Input")
 	void SetThrottle(float ThrottleValue);
+	void DriveTrack(float ThrottleValue);
 	UPROPERTY(EditDefaultsOnly, Category = "Throttle")
-	float MaxThrottleForce = 48000000; 
+	float MaxThrottleForce = 48000000;
 protected:
 	virtual void BeginPlay() override;
 private:
@@ -26,6 +27,8 @@ private:
 	float SlippageSpeed;
 	FVector CorrectionAcceleration;
 	FVector CorrectionForce;
+	float CurrentThrottle;
+	void ApplySidewaysFriction(float DeltaTime);
 	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,const FHitResult& Hit);
+		void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };

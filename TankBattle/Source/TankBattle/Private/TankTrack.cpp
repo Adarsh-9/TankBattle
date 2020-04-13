@@ -9,23 +9,37 @@ void UTankTrack::BeginPlay()
 	TankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
 	OnComponentHit.AddDynamic(this,&UTankTrack::OnHit);
 }
+
 void UTankTrack::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	
+	DriveTrack(CurrentThrottle);
+	float Deltatime = GetWorld()->GetDeltaSeconds();
+	ApplySidewaysFriction(Deltatime);
+	CurrentThrottle = 0;
 }
 
 void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	//Programmatic Side ways Friction
-	/*SlippageSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());
-	CorrectionAcceleration = -SlippageSpeed / DeltaTime * GetRightVector();
-	CorrectionForce = (TankRoot->GetMass() * CorrectionAcceleration)/2;
-	TankRoot->AddForce(CorrectionForce);*/
 }
-//Apply Throttle to Tank
+
 void UTankTrack::SetThrottle(float ThrottleValue)
+{
+	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + ThrottleValue,-1,1);
+}
+
+//Apply Throttle to Tank
+void UTankTrack::DriveTrack(float ThrottleValue)
 {
 	FVector ForceApplied = GetForwardVector() * MaxThrottleForce * ThrottleValue;
 	auto ForceLocation = GetComponentLocation();
-	TankRoot->AddForceAtLocation(ForceApplied,ForceLocation,NAME_None);
+	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation, NAME_None);
+}
+
+//Programmatic Side ways Friction
+void UTankTrack::ApplySidewaysFriction(float DeltaTime)
+{
+	SlippageSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());
+	CorrectionAcceleration = (-SlippageSpeed / DeltaTime) * GetRightVector();
+	CorrectionForce = (TankRoot->GetMass() * CorrectionAcceleration)/3;
+	TankRoot->AddForce(CorrectionForce);
 }

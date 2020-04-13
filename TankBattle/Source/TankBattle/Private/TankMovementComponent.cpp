@@ -5,26 +5,26 @@
 
 void UTankMovementComponent::HandleForwardMovement(float AxisValue)
 {
-	/*if (!ensure(LeftTrack && RightTrack)){return;}
+	if (!ensure(LeftTrack && RightTrack)){return;}
 	LeftTrack->SetThrottle(AxisValue);
-	RightTrack->SetThrottle(AxisValue);*/
-	GetOwner()->AddActorLocalOffset(FVector(AxisValue*18,0,0));
+	RightTrack->SetThrottle(AxisValue);
+	//GetOwner()->AddActorLocalOffset(FVector(AxisValue*18,0,0));
 }
 
 void UTankMovementComponent::HandleTurnRight(float AxisValue)
 {
-	/*if (!ensure(LeftTrack && RightTrack)) { return; }
+	if (!ensure(LeftTrack && RightTrack)) { return; }
 	LeftTrack->SetThrottle(AxisValue);
-	RightTrack->SetThrottle(-AxisValue);*/
-	GetOwner()->AddActorLocalRotation(FRotator(0,AxisValue,0));
+	RightTrack->SetThrottle(-AxisValue);
+	//GetOwner()->AddActorLocalRotation(FRotator(0,AxisValue,0));
 }
 
 void UTankMovementComponent::HandleTurnLeft(float AxisValue)
 {
-	/*if (!ensure(LeftTrack && RightTrack)) { return; }
+	if (!ensure(LeftTrack && RightTrack)) { return; }
 	LeftTrack->SetThrottle(-AxisValue);
-	RightTrack->SetThrottle(AxisValue);*/
-	GetOwner()->AddActorLocalRotation(FRotator(0,-AxisValue,0));
+	RightTrack->SetThrottle(AxisValue);
+	//GetOwner()->AddActorLocalRotation(FRotator(0,-AxisValue,0));
 }
 
 void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet)
@@ -45,3 +45,4 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	auto TurnAxisValue = FVector::CrossProduct(TankDirection,MoveDirection).Z;
 	HandleTurnRight(TurnAxisValue);
 }
+
