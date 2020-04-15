@@ -23,12 +23,5 @@ public:
 protected:
 	virtual void BeginPlay() override;
 private:
-	UStaticMeshComponent* TankRoot;
-	float SlippageSpeed;
-	FVector CorrectionAcceleration;
-	FVector CorrectionForce;
-	float CurrentThrottle;
-	void ApplySidewaysFriction(float DeltaTime);
-	UFUNCTION()
-		void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	TArray<class ASprungWheel*> GetWheels() const;
 };
